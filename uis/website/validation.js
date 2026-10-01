@@ -57,9 +57,10 @@ function messageFor(id) {
 
   if (id === "phone") {
     const compact = String(valueOf(id)).trim().replace(/[\s()-]/g, "")
+    if (!compact) return ERRORS[id]
+    if (country !== "Colombia" && country !== "United States") return ""
     const ok =
-      (country === "Colombia" && /^\+57\d{8,12}$/.test(compact)) ||
-      (country === "United States" && /^\+1\d{10}$/.test(compact))
+      country === "Colombia" ? /^\+57\d{8,12}$/.test(compact) : /^\+1\d{10}$/.test(compact)
     return ok ? "" : ERRORS[id]
   }
 
@@ -186,12 +187,13 @@ function onLiveEvent(event) {
     const country = valueOf("country")
     if (country !== lastCountry) {
       const hadCity = Boolean(valueOf("city"))
-      const hadPhone = Boolean(String(valueOf("phone")).trim())
+      const phoneError = document.getElementById("phone-error")
+      const shouldCheckPhone = Boolean(String(valueOf("phone")).trim()) || Boolean(phoneError.textContent)
       lastCountry = country
       lastCity = ""
       syncCities()
       if (hadCity) validateField("city")
-      if (hadPhone) validateField("phone")
+      if (shouldCheckPhone) validateField("phone")
     }
     validateField("country")
     return
