@@ -12,4 +12,15 @@ Organiza `uis/` por **distintas áreas de la compañía** — cada subcarpeta ag
 - **Propósito principal**: centralizar en un único lugar todas las aplicaciones frontend que dan soporte a los casos de uso de la compañía.
 - **Recomendación**: documenta en este archivo (o en sub-READMEs) las aplicaciones que vayas añadiendo, su objetivo, tecnología usada y cómo ejecutarlas.
 
+## `website` — sitio público de Brasaland
+
+Sitio corporativo del hito 1. HTML estático, clases de utilidad de Tailwind y `validation.js`. Idioma base: inglés. Los datos salen de `CONTEXT.md` en la raíz.
+
+```bash
+cd uis/website
+npx http-server . -p 3000 -a 0.0.0.0
+```
+
+Detalle en [website/README.md](./website/README.md).
+
 > _These instructions are also available in [English](./README.md)._

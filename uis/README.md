@@ -12,4 +12,15 @@ Organize `uis/` by **different concerns** — each subfolder covers a distinct a
 - **Main purpose**: to centralize in a single place all frontend applications that support the company's use cases.
 - **Recommendation**: document in this file (or in sub-READMEs) the applications you add, their objective, the technology used, and how to run them.
 
+## `website` — Brasaland public site
+
+Milestone 1 corporate website. Static HTML, Tailwind utility classes, and `validation.js`. Base language: English. Facts come from the root `CONTEXT.md`.
+
+```bash
+cd uis/website
+npx http-server . -p 3000 -a 0.0.0.0
+```
+
+See [website/README.md](./website/README.md).
+
 > _Estas instrucciones también están disponibles en [español](./README.es.md)._
