@@ -190,6 +190,9 @@ function toResult(errors: string[]): ValidationResult {
 
 /**
  * Validates all CONTEXT MenuItem rules.
+ * Price rule ("Both USD and COP prices must be > 0") applies only to
+ * basePrice — the field the brief names as a price. ingredientCost is a
+ * cost field and is not checked under that rule.
  * Does not mutate the input.
  */
 export function validateMenuItem(
@@ -203,7 +206,6 @@ export function validateMenuItem(
     collectErrors([
       validateMenuItemName(item),
       validatePositivePrice(item.basePrice, "basePrice"),
-      validatePositivePrice(item.ingredientCost, "ingredientCost"),
       validateMenuItemPrepTime(item),
       validateMenuItemAvailability(item),
     ])

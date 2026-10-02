@@ -293,5 +293,109 @@ label(
 );
 label("validateLocation(invalidLocation)", validateLocation(invalidLocation));
 
+section("8. MenuItem validation boundary cases");
+const menuBase = sampleMenuItems[0];
+
+const menuBoundaryCases: Array<{
+  name: string;
+  expected: "pass" | "fail";
+  actual: "pass" | "fail";
+}> = [
+  {
+    name: "prepTimeMinutes 0",
+    expected: "fail",
+    actual: validateMenuItem({ ...menuBase, prepTimeMinutes: 0 }).valid
+      ? "pass"
+      : "fail",
+  },
+  {
+    name: "prepTimeMinutes 1",
+    expected: "pass",
+    actual: validateMenuItem({ ...menuBase, prepTimeMinutes: 1 }).valid
+      ? "pass"
+      : "fail",
+  },
+  {
+    name: "prepTimeMinutes 60",
+    expected: "pass",
+    actual: validateMenuItem({ ...menuBase, prepTimeMinutes: 60 }).valid
+      ? "pass"
+      : "fail",
+  },
+  {
+    name: "prepTimeMinutes 61",
+    expected: "fail",
+    actual: validateMenuItem({ ...menuBase, prepTimeMinutes: 61 }).valid
+      ? "pass"
+      : "fail",
+  },
+  {
+    name: "empty name",
+    expected: "fail",
+    actual: validateMenuItem({ ...menuBase, name: "" }).valid ? "pass" : "fail",
+  },
+  {
+    name: "whitespace-only name",
+    expected: "fail",
+    actual: validateMenuItem({ ...menuBase, name: "   " }).valid
+      ? "pass"
+      : "fail",
+  },
+  {
+    name: "available nowhere",
+    expected: "fail",
+    actual: validateMenuItem({
+      ...menuBase,
+      isAvailableInColombia: false,
+      isAvailableInUSA: false,
+    }).valid
+      ? "pass"
+      : "fail",
+  },
+  {
+    name: "basePrice.USD 0",
+    expected: "fail",
+    actual: validateMenuItem({
+      ...menuBase,
+      basePrice: { USD: 0, COP: 74000 },
+    }).valid
+      ? "pass"
+      : "fail",
+  },
+  {
+    name: "basePrice.COP negative",
+    expected: "fail",
+    actual: validateMenuItem({
+      ...menuBase,
+      basePrice: { USD: 18.5, COP: -1 },
+    }).valid
+      ? "pass"
+      : "fail",
+  },
+  {
+    name: "ingredientCost 0 (not a brief price field — still pass)",
+    expected: "pass",
+    actual: validateMenuItem({
+      ...menuBase,
+      ingredientCost: { USD: 0, COP: 0 },
+    }).valid
+      ? "pass"
+      : "fail",
+  },
+];
+
+const boundaryFailures = menuBoundaryCases.filter(
+  (testCase) => testCase.actual !== testCase.expected
+);
+console.table(menuBoundaryCases);
+if (boundaryFailures.length > 0) {
+  throw new Error(
+    `MenuItem boundary mismatches: ${boundaryFailures
+      .map((testCase) => testCase.name)
+      .join(", ")}`
+  );
+}
+console.log("MenuItem boundary cases: all matched expected pass/fail.");
+
 section("Demo complete");
 console.log("All function groups exercised. Exit cleanly.");
